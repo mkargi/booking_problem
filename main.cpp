@@ -7,7 +7,7 @@ using namespace bp;
 
 
 
-bool sortBookings( Booking::List bookings, Booking::List openBookings, Room::List rooms, int bn, int rn, std::set<Room::List>& output, bool stopByFirstMatch = false )
+bool assignBookings( Booking::List bookings, Booking::List openBookings, Room::List rooms, int bn, int rn, std::set<Room::List>& output, bool stopByFirstMatch = false )
 {
     bool status = false;
 
@@ -21,7 +21,7 @@ bool sortBookings( Booking::List bookings, Booking::List openBookings, Room::Lis
     }
     else if( bn >= bookings.size() )
     {
-        status = sortBookings( openBookings, {}, rooms, 0, rn+1, output, stopByFirstMatch );
+        status = assignBookings( openBookings, {}, rooms, 0, rn+1, output, stopByFirstMatch );
     }
     else
     {  
@@ -36,7 +36,7 @@ bool sortBookings( Booking::List bookings, Booking::List openBookings, Room::Lis
             else
                 rooms[rn].bookings.push_back(bookings[bn]);
             
-            status = sortBookings( bookings, openBookings, rooms, bn+1, rn, output, stopByFirstMatch ); 
+            status = assignBookings( bookings, openBookings, rooms, bn+1, rn, output, stopByFirstMatch ); 
 
             if( stopByFirstMatch == true && status == true)
                 break;
@@ -56,28 +56,27 @@ bool sortBookings( Booking::List bookings, Booking::List openBookings, Room::Lis
 
 int main(int argc, char *argv[])
 {
-    Booking b0(0, 3, 5, 'X', false);
-    Booking b1(2, 0, 6, 'B', true);
-
-    auto status = b0.isOverlapping(b1);
-
+    // define some rooms
     Room::List rooms = {Room(0), Room(1), Room(2), Room(3) };
+    
+    // add fixed bookings, which cannot be shifted
+    rooms.at(0).bookings.push_back(Booking(0, 3, 5, 'X', false));
+    rooms.at(2).bookings.push_back(Booking(1, 0, 3, 'X', false));
+
+    // define some bookings
     Booking::List bookings = { Booking(2, 1, 2, 'A', true)
                              , Booking(3, 0, 6, 'B', true)
                              , Booking(4, 0, 0, 'C', true)
                              , Booking(5, 1, 2, 'D', true)
                              , Booking(6, 5, 6, 'E', true) };
 
-    rooms.at(0).bookings.push_back(Booking(0, 3, 5, 'X', false));
-    rooms.at(2).bookings.push_back(Booking(1, 0, 3, 'X', false));
-
+    // assign bookings to rooms
     std::set<Room::List> output;
-    sortBookings( bookings, {}, rooms, 0, 0, output, false );
+    assignBookings( bookings, {}, rooms, 0, 0, output, false );
 
+    // print all possible solutions
     for( const auto& out : output )
-    {
         Room::print(out);
-    }
 
     return 0;
 }
