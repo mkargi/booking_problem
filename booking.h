@@ -10,9 +10,22 @@ namespace bp
         public:
         using List = std::vector<Booking>;
 
+        static void print(const Booking::List& bookings)
+        {
+            for (const auto& booking : bookings)
+            {
+                std::cout << "booking " << booking.id << ":";
+                std::cout << " start=" << booking.start << ",";
+                std::cout << " end=" << booking.end << ",";
+                std::cout << " symbol=" << booking.symbol << ",";
+                std::cout << std::endl;
+            }
+            std::cout << std::endl;
+        }
+
         public:
-            Booking(int id, int start, int end, bool is_moveable)
-                : id(id), start(start), end(end), is_moveable(is_moveable)
+            Booking(int id, int start, int end, char symbol, bool is_moveable)
+                : id(id), start(start), end(end), symbol(symbol), is_moveable(is_moveable)
             {}  
 
             bool isOverlapping( const Booking& booking ) const
@@ -32,7 +45,7 @@ namespace bp
             int start;
             int end;
             bool is_moveable; 
-
+            char symbol;
     };
 }
 

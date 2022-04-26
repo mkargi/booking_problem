@@ -22,12 +22,13 @@ namespace bp
                 {
                     for( int i=booking.start; i<=booking.end; ++i )
                     {
-                        c[i] = 'x';
+                        c[i] = booking.symbol;
                     }
                 }
                 std::cout << c << "";
                 std::cout << std::endl;
             }
+            std::cout << std::endl;
         }
 
 

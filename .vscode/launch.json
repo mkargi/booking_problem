@@ -8,9 +8,15 @@
             "name": "(gdb) booking_problem",
             "type": "cppdbg",
             "request": "launch",
-            "program": "build/booking_problem",
+            "program": "${workspaceFolder}/build/booking_problem",
             "cwd": "${workspaceFolder}",
-            "MIMode": "gdb",        }
+            "MIMode": "gdb",        
+            "setupCommands": [
+
+                { "text": "-enable-pretty-printing", "description": "enable pretty printing", "ignoreFailures": true },
+                { "text": "handle SIGPIPE nostop noprint pass", "description": "ignore SIGPIPE", "ignoreFailures": true }  
+            ]
+        }
 
     ],
 
