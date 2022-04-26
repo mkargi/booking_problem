@@ -57,7 +57,7 @@ bool assignBookings( Booking::List bookings, Booking::List openBookings, Room::L
 int main(int argc, char *argv[])
 {
     // define some rooms
-    Room::List rooms = {Room(0), Room(1), Room(2), Room(3) };
+    Room::List rooms = {Room(0), Room(1), Room(2), Room(3), Room(4) };
     
     // add fixed bookings, which cannot be shifted
     rooms.at(0).bookings.push_back(Booking(0, 3, 5, 'X', false));
@@ -65,14 +65,18 @@ int main(int argc, char *argv[])
 
     // define some bookings
     Booking::List bookings = { Booking(2, 1, 2, 'A', true)
-                             , Booking(3, 0, 6, 'B', true)
+                             , Booking(3, 0, 4, 'B', true)
                              , Booking(4, 0, 0, 'C', true)
-                             , Booking(5, 1, 2, 'D', true)
-                             , Booking(6, 5, 6, 'E', true) };
+                             , Booking(5, 1, 3, 'D', true)
+                             , Booking(6, 5, 6, 'E', true)
+                             , Booking(7, 7, 10, 'D', true)
+                             , Booking(8, 3, 6, 'F', true)
+                             , Booking(9, 0, 1, 'G', true)
+                            };
 
     // assign bookings to rooms
     std::set<Room::List> output;
-    assignBookings( bookings, {}, rooms, 0, 0, output, false );
+    assignBookings( bookings, {}, rooms, 0, 0, output, true );
 
     // print all possible solutions
     for( const auto& out : output )
