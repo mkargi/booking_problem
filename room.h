@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "booking.h"
+#include <numeric>
 
 namespace bp
 {
@@ -38,18 +39,30 @@ namespace bp
         {}
 
         bool isOverlapping( const Booking& booking ) const
+        {
+            bool status = false;
+            for( const auto& b : bookings )
             {
-                bool status = false;
-                for( const auto& b : bookings )
+                if( b.isOverlapping(booking) )
                 {
-                    if( b.isOverlapping(booking) )
-                    {
-                        status = true;
-                        break;
-                    }
+                    status = true;
+                    break;
                 }
-                return status;
             }
+            return status;
+        }
+
+        bool operator<(const Room& rhs) const
+        {
+            int hash0 = id + std::accumulate(bookings.begin(), bookings.end(), 0, [](int sum, const Booking& booking) {
+                return sum + booking.id;
+            });
+
+            int hash1 = rhs.id + std::accumulate(rhs.bookings.begin(), rhs.bookings.end(), 0, [](int sum, const Booking& booking) {
+                return sum + booking.id;
+            });
+            return  hash0 < hash1;
+        }
 
 
         public:
